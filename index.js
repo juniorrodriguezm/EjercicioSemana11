@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-app.listen(5000, () => console.log('Example app listening on port 5000!'));
+app.listen(5100, () => console.log('Example app listening on port 5100!'));
 
 
 
@@ -21,12 +21,6 @@ var usuario = files.map(function (persona) {
 
 });
 
-var contenido = files.map(function (persona) {
-    lectura = fs.readFileSync('./personas/' + persona).toString();
-   return lectura;
-
-
-});
 
 
 
@@ -99,7 +93,16 @@ ${personita}
 `));
 
 
-app.get(usuario, (req, res) => res.send(`
+app.get(usuario, (req, res) => {
+
+    var nombre = req.path.split("/");
+    lectura = fs.readFileSync('./personas/' + nombre[1]).toString();
+
+
+    res.send(
+
+
+        `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,10 +131,11 @@ border-radius:10px;
 </head>
 <body>
 <div>
-<h1> ${contenido} </h1>
+<h1> ${lectura} </h1>
 </div>
 
 </body>
 </html>
 
-`));
+`)
+});
