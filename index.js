@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
+app.use('/css',express.static( 'public/css'));
 
 app.listen(5100, () => console.log('Example app listening on port 5100!'));
+
 
 
 
@@ -9,6 +11,9 @@ var fs = require('fs');
 var files = fs.readdirSync('./personas/');
 var usuario = 'null';
 var lectura;
+var css = "css/estilo.css";
+
+console.log(css);
 
 var personita = files.map(function (persona) {
     return '<li><a href="' + persona + '">' + persona + '</a></li>';
@@ -22,7 +27,14 @@ var usuario = files.map(function (persona) {
 });
 
 
+app.post('/', (req, res) => {
 
+    fs.writeFile('./personas/' + req.query.nombre, req.query.desc, (err) => {
+        if (err) throw err;
+        console.log('Guiso Nuevo agregado');
+    });
+
+});
 
 app.get('/', (req, res) => res.send(`
 <!DOCTYPE html>
@@ -30,47 +42,7 @@ app.get('/', (req, res) => res.send(`
 <head>
 <meta charset="UTF-8">
 <title>Lista de Todos XD</title>
-
-<style>
-
-h1{
-font-family: 'Trebuchet MS';
-font-size: 100px;
-margin:0px;
-}
-
-a{
-font-family: 'Trebuchet MS';
-font-size: 50px;
-margin:0px;
-text-decoration: none;
-
-}
-
-a:hover{
-    color:green;
-    
-    }
-
-ul{
-    list-style: none;
-}
-p{
-font-family: 'Trebuchet MS';
-font-size: 50px;
-margin:0px;
-}
-
-
-div{
-width:40%;
-padding:50px;
-background-color: beige;
-border: solid red 5px;
-border-radius:10px;
-
-}
-</style>
+<link rel="stylesheet" href="${css}">
 
 </head>
 <body>
@@ -108,25 +80,7 @@ app.get(usuario, (req, res) => {
 <head>
 <meta charset="UTF-8">
 <title>Lista de Todos XD</title>
-
-<style>
-
-h1{
-font-family: 'Trebuchet MS';
-font-size: 100px;
-margin:0px;
-}
-
-
-div{
-width:40%;
-padding:50px;
-background-color: beige;
-border: solid red 5px;
-border-radius:10px;
-
-}
-</style>
+<link rel="stylesheet" href="${css}">
 
 </head>
 <body>
